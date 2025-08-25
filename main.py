@@ -65,7 +65,7 @@ def main():
         for ast in asteroids:
             hit_player = ast.check_collisions(player)
             if hit_player == True:
-                raise SystemExit()
+                player.damage()
             for bullet in shots:
                 bullet_check = bullet.check_collisions(ast)
                 if bullet_check == True:
