@@ -48,8 +48,16 @@ def main():
                 return
 
         updatable.update(dt)   
+        
         for ast in asteroids:
-            ast.check_collisions(player)
+            hit_player = ast.check_collisions(player)
+            if hit_player == True:
+                raise SystemExit()
+            for bullet in shots:
+                bullet_check = bullet.check_collisions(ast)
+                if bullet_check == True:
+                    ast.kill()
+                    bullet.kill()
 
         screen.fill((0, 0, 0))
         for item in drawable:
