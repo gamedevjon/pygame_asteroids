@@ -42,6 +42,8 @@ def main():
                 return
 
         updatable.update(dt)   
+        for ast in asteroids:
+            ast.check_collisions(player)
 
         screen.fill((0, 0, 0))
         for item in drawable:
