@@ -5,6 +5,12 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 
+def update_score(score):
+    font = pygame.font.SysFont(None, 48) 
+    score_text = font.render(f"Score: {score}", True, (255, 255, 255)) 
+    rect = score_text.get_rect(center=(SCREEN_WIDTH /2, SCREEN_HEIGHT/6))
+    return score_text, rect
+
 def main():
     print("Starting Asteroids!")
     print("Screen width: " + str(SCREEN_WIDTH))
@@ -41,11 +47,18 @@ def main():
     shots = pygame.sprite.Group()
     Shot.containers = (shots, updatable, drawable)
 
-
+    score = 0
+    pygame.font.init()
+    
+    score_text, score_text_rect = update_score(0)
+                             
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            if event.type == ASTEROID_DESTROYED:
+                score += event.points
+                score_text, score_text_rect = update_score(score)
 
         updatable.update(dt)   
         
@@ -60,6 +73,8 @@ def main():
                     bullet.kill()
 
         screen.fill((0, 0, 0))
+        #draw score
+        screen.blit(score_text, score_text_rect)
         for item in drawable:
             item.draw(screen)
         pygame.display.flip()
